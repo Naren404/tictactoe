@@ -19,12 +19,35 @@
 
 .player1{
 	margin: 12px auto;
+	border: 2px solid gray;
+	border-radius: 10px;
+	padding: 4px;
 }
 .player2{
 	margin: 12px auto;
+	border: 2px solid gray;
+	border-radius: 10px;
+	padding: 4px;
+	display: none;
 }
-.disabled{
-	background-color:yellow;
+.disabled1{
+	background-color:#ffd180;
 	font-size: 40px;
 	font-weight: bold;
+}
+.disabled2{
+	background-color:#ff5722;
+	font-size: 40px;
+	font-weight: bold;
+}
+.restart{
+	display: none
+}
+.restart button{
+	font-weight: bold;
+	background-color:#1b5e20;
+	color: white; 
+	cursor: pointer;
+	padding: 20px;
+	border-radius: 10px;
 }
