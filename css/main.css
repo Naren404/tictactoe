@@ -1,0 +1,30 @@
+.game-board{
+	width: 450px;
+	height: 450px;
+	margin: 0 auto;
+}
+.row{
+	display: flex;
+}
+
+.box{
+	width: 150px;
+	height: 150px;
+	border: 2px solid black;
+	display: flex;
+  	justify-content: center;
+  	align-items: center;
+
+}
+
+.player1{
+	margin: 12px auto;
+}
+.player2{
+	margin: 12px auto;
+}
+.disabled{
+	background-color:yellow;
+	font-size: 40px;
+	font-weight: bold;
+}
