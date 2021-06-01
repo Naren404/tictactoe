@@ -77,6 +77,7 @@ $(document).ready(function(){
 				}
 				if (draw) {winner="<p>Its a draw!!<strong>Play Again.</strong></p>"}
 			}
+		
 		if (finished) {
 			$(".restart").show()
 			$("#player_turn_displayer").hide()
