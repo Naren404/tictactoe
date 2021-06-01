@@ -3,7 +3,7 @@
 	height: 450px;
 	margin: 0 auto;
 }
-.row{
+.row{pointer-events:none;
 	display: flex;
 }
 
@@ -14,17 +14,17 @@
 	display: flex;
   	justify-content: center;
   	align-items: center;
-
 }
 
 .player1{
-	margin: 12px auto;
+	margin-top:12px;
 	border: 2px solid gray;
 	border-radius: 10px;
 	padding: 4px;
+	display: none;
 }
 .player2{
-	margin: 12px auto;
+	margin-top:12px;
 	border: 2px solid gray;
 	border-radius: 10px;
 	padding: 4px;
@@ -40,9 +40,6 @@
 	font-size: 40px;
 	font-weight: bold;
 }
-.restart{
-	display: none
-}
 .restart button{
 	font-weight: bold;
 	background-color:#1b5e20;
@@ -50,4 +47,15 @@
 	cursor: pointer;
 	padding: 20px;
 	border-radius: 10px;
+
+}
+.center{
+	margin-top:12px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+#result{
+	display: none;
 }
