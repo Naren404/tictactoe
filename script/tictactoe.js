@@ -1,13 +1,18 @@
 $(document).ready(function(){
 
 	var clickCount=0;
-	var result,player,playerToken;
+	var result,player,playerTokenText;
 	
 
 	$(".box").click(function(){
 		$(this).unbind('click');
 		clickCount+=1;
-		setPlayerToken(clickCount,$(this));
+		if (clickCount % 2 != 0){
+			setPlayerToken("disabled1","O","OOO","1",$(this));
+		}
+		else{
+			setPlayerToken("disabled2","X","XXX","2",$(this));
+		}
 		showPlayerTurn();
 
 		if (clickCount>=5){
@@ -21,8 +26,8 @@ $(document).ready(function(){
 		}
 
 	});
-
-	//for statrting game
+	
+	//for starting game
 		$("#start").click(function(){
 			$(".box").css("pointer-events", "auto");
 			$("#start").hide();
@@ -30,20 +35,13 @@ $(document).ready(function(){
 		});
 
 	//function for setting the player token
-	function setPlayerToken(clickCount,thisBox){
-		if (clickCount % 2 != 0){
-			thisBox.addClass("disabled1");
-			thisBox.text("O");
-			playerToken="OOO";
-			player="1";
-		}
-		else{
-			thisBox.addClass("disabled2");
-			thisBox.text("X");
-			playerToken="XXX";
-			player="2";
-		}
+	function setPlayerToken(disabledClass,boxText,tokenText,playerNumber,thisBox){
+			thisBox.addClass(disabledClass);
+			thisBox.text(boxText);
+			playerTokenText=tokenText;
+			player=playerNumber;
 	}
+	
 	//function for setting the player turn
 	function showPlayerTurn(){
 			$(".player1").toggle();
@@ -52,7 +50,7 @@ $(document).ready(function(){
 
 	//function to check the winner
 	function checkRowWinner(thisRow){
-		if ($(".row1").text() == playerToken || $(".row2").text() == playerToken || $(".row3").text() == playerToken ){
+		if ($(".row1").text() == playerTokenText || $(".row2").text() == playerTokenText || $(".row3").text() == playerTokenText ){
 			result=`<p>Congratulations!! 🎉🎉 <strong> Player${player} is the winner.</strong></p>`;
 			declareWinner();
 		}
@@ -60,7 +58,7 @@ $(document).ready(function(){
 	}
 	//function to check the winner
 	function checkColWinner(thisRow){
-		if ($(".col1").text() == playerToken || $(".col2").text() == playerToken || $(".col3").text() == playerToken ){
+		if ($(".col1").text() == playerTokenText || $(".col2").text() == playerTokenText || $(".col3").text() == playerTokenText ){
 			result=`<p>Congratulations!! 🎉🎉 <strong> Player${player} is the winner.</strong></p>`;
 			declareWinner();
 		}
@@ -68,7 +66,7 @@ $(document).ready(function(){
 	}
 	//function to check the winner
 	function checkDiagWinner(thisRow){
-		if ($(".diag1").text() == playerToken || $(".diag2").text() == playerToken ){
+		if ($(".diag1").text() == playerTokenText || $(".diag2").text() == playerTokenText ){
 			result=`<p>Congratulations!! 🎉🎉 <strong> Player${player} is the winner.</strong></p>`;
 			declareWinner();
 		}
@@ -83,13 +81,13 @@ $(document).ready(function(){
 	//function to declare winner
 	function declareWinner(){
 			$(".restart").show();
-			$("#player_turn_displayer").hide();
+			$("#player_turn_display").hide();
 			$("#result").html(result);
 			$("#result").show();
 			$(".box").css("pointer-events", "none");
 	}
  
-	//for restatrting the once finished
+	//for restarting the once finished
 		$("#restart").click(function(){
             location.reload(true);
         });
