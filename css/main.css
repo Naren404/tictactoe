@@ -1,9 +1,12 @@
 .game-board{
-	width: 450px;
-	height: 450px;
+	width: 100%;
+	height: auto;
 	margin: 0 auto;
+	display: flex;
+  	justify-content: center;
+  	align-items: center;
 }
-.row{pointer-events:none;
+.row{
 	display: flex;
 }
 
@@ -57,6 +60,11 @@
 	justify-content: center;
 	align-items: center;
 }
-#result{
-	display: none;
+.GameSizeInput input{
+	width: 400px;
+	height: 20px;
+	border: 2px solid #ff5722;
+	border-radius: 10px;
+	margin: 6px;
+	padding: 6px;
 }

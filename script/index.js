@@ -1,153 +1,154 @@
-$(document).ready(function(){
-	createAllBoxes();
-	var currentRowNumber,currentColNumber;
-	var clickCount=0;
-	var result,player,playerTokenText,currentTokenText;
-	
-	$(".box").click(function(){
-		$(this).unbind('click');
-		
-		clickCount+=1;
-		if (clickCount % 2 != 0){
-			setPlayerToken("disabled1","O","OOOOOOOOO","1",$(this));
-		}
-		else{
-			setPlayerToken("disabled2","X","XXXXXXXXX","2",$(this));
-		}
-		showPlayerTurn();
+$(".game-board").hide();
+var clickCount = 0;
+var currentPlayerToken = "O";
+var gameSize,result=false;
+startGame();
 
-		if (clickCount>=17){
-            currentRowNumber = $(this).parent().data('row').split("");
-            currentRowNumber = currentRowNumber[currentRowNumber.length - 1];
-
-            currentColNumber = $(this).data('col').split("");
-            currentColNumber = currentColNumber[currentColNumber.length - 1];
-
-			checkRowWinner(currentRowNumber);
-            checkColWinner(currentColNumber);
-
-            if (currentRowNumber == currentColNumber) {
-                checkPrimaryDiagonalWinner();
+function startGame() {
+    $("#startGame").click(function(){
+        setGameSize();
+        setGameArena();
+        createAllBoxes();
+    });
+}
+function setGameSize() {
+    
+    if ($("#gameSize").val() >= 3 && $("#gameSize").val() <= 100) {
+        gameSize = parseInt($("#gameSize").val());
+    } else {
+        alert("Please choose Game Size from 3 to 100.");
+        location.reload(true);
+    }
+    
+}
+function setGameArena() { 
+    $("#startGame").hide();
+    $("#gameSize").hide();
+    $(".game-board").show();
+    $(".player1").show();
+ }
+ function createAllBoxes(){
+    for (row = 1; row <= gameSize; row++) {
+        row_num = `Row${row}`;
+        $(".rows").append(`<div class="row" data-line=${row}></div>`)
+        for ( col = 1; col<= gameSize; col++){
+            if (row==col) {
+                primaryDiag = "pDiagonal"; 
+            }else{
+                primaryDiag="None";
             }
-            if ( parseInt(currentRowNumber) + parseInt(currentColNumber) == 10) {
-                checkSecondaryDiagonalWinner();
+            if (col+row == gameSize + 1) {
+                secondaryDiag = "sDiagonal";
+            }else{
+                secondaryDiag = "None";
             }
-        }	
-        if(clickCount === 81 && !result){
-			checkDraw();
-		}
-
-					
-	});
-	
-	//for starting game
-		$("#start").click(function(){
-			$(".box").css("pointer-events", "auto");
-			$("#start").hide();
-			$(".player1").show();
-		});
-
-	//function for setting the player token
-	function setPlayerToken(disabledClass,boxText,tokenText,playerNumber,thisBox){
-			thisBox.addClass(disabledClass);
-			thisBox.text(boxText);
-			playerTokenText=tokenText;
-			player=playerNumber;
-	}
-	
-	//function for setting the player turn
-	function showPlayerTurn(){
-			$(".player1").toggle();
-			$(".player2").toggle();
-	}
-
-	//functions to check the winner by row
-	function checkRowWinner(currentRowNumber){
-            currentRow = $(`div[data-row='Row${currentRowNumber}']`)["0"];
-            currentRow = currentRow.innerText.replace(/\r?\n|\r/g, "");
-            checkWinner();
-	}
-    //functions to check the winner by column
-	function checkColWinner(currentColNumber){
-        currentCol = $(`div[data-col='Col${currentColNumber}']`);
-        currentTokenText = getCurrentTokenText(currentCol);
-        checkWinner();
-    }
-
-    //function to check winner by primary diagonal
-    function checkPrimaryDiagonalWinner(){
-        currentDiagonal=$(`div[data-primaryDiag='pDiagonal']`);
-        currentTokenText = getCurrentTokenText(currentDiagonal);
-        checkWinner();
-    }
-
-    //function to check winner by secondary diagonal
-    function checkSecondaryDiagonalWinner(){
-        currentDiagonal=$(`div[data-secondaryDiag='sDiagonal']`);
-        currentTokenText = getCurrentTokenText(currentDiagonal);
-        checkWinner();
-    }
-    //function to check col and diagonal texts
-    function getCurrentTokenText(currentCell){
-        return (currentCell["0"].innerText + currentCell["1"].innerText + currentCell["2"].innerText +
-                currentCell["3"].innerText + currentCell["4"].innerText + currentCell["5"].innerText +
-                currentCell["6"].innerText + currentCell["7"].innerText + currentCell["8"].innerText);
-    }
-
-    //function to check winner
-    function checkWinner() {
-        if(currentTokenText == playerTokenText){
-            result=`<p>Congratulations!! 🎉🎉 <strong> Player${player} is the winner.</strong></p>`;
-            declareWinner();
+            col_num = `Col${col}`;
+        $(`[data-line = ${row}]`).append(`<div class="box" data-row=${row} data-col=${col} data-primaryDiag=${primaryDiag} data-secondaryDiag=${secondaryDiag} ></div>`);
         }
     }
-    //function to check the draw
-	function checkDraw(){
-		declareWinner(result="Its a draw!! Play Again.");
-	}
-	//function to declare winner
-	function declareWinner(){
-			$(".restart").show();
-			$("#player_turn_display").hide();
-			$("#result").html(result);
-			$("#result").show();
-			$(".box").css("pointer-events", "none");
-	}
- 
-	//for restarting the once finished
-		$("#restart").click(function(){
-            location.reload(true);
-        });
+}
 
-	//function to create Boxes:rows and columns
-	function createBoxes(){
-		for (let col = 1; col<= 9; col++){
-			col_num = `Col${col}`;
-		$(".row").append(`<div class="box" data-col=${col_num} ></div>`);
-		}
-		
-	}
+//all the functions for games logic
 
-    function createAllBoxes(){
-		for (let row = 1; row <=9; row++) {
-            row_num = `Row${row}`;
-			$(".rows").append(`<div class="row" data-row=${row_num}></div>`)
-            for (let col = 1; col<= 9; col++){
-                if (row==col) {
-                    primaryDiag = "pDiagonal"; 
-                }else{
-                    primaryDiag="None";
-                }
-                if ( col+row == 10) {
-                    secondaryDiag = "sDiagonal";
-                }else{
-                    secondaryDiag = "None";
-                }
-                col_num = `Col${col}`;
-            $(`[data-row = ${row_num}]`).append(`<div class="box" data-col=${col_num} data-primaryDiag=${primaryDiag} data-secondaryDiag=${secondaryDiag} ></div>`);
-            }
-		}
-		
-		
-	}
+$(".rows").on("click",".box",function() {
+    clickCount++;
+    $(this).css("pointer-events", "none");
+    currentPlayerToken = setCurrentPlayer(clickCount);
+    setCurrentPlayerBox(currentPlayerToken,$(this));
+    showPlayerTurn();
+    totalMinimumMovesToFindResult = gameSize * 2 -1;
+    
+    if (clickCount >= totalMinimumMovesToFindResult){
+        checkForTheResult($(this));
+    }
 });
+
+function setCurrentPlayer(clickCount) {
+    return(clickCount % 2 != 0?currentPlayerToken = "O":currentPlayerToken  = "X");
+}
+function setCurrentPlayerBox(currentPlayerToken,thisBox){
+    currentPlayerToken == "O"?boxDisabledClass = "disabled1":boxDisabledClass = "disabled2";
+    thisBox.addClass(boxDisabledClass);
+    thisBox.text(currentPlayerToken);
+}
+
+function checkForTheResult(thisBox){
+    currentRowNumber = thisBox.data('row');
+    currentColNumber = thisBox.data('col');
+    getCurrentRowTokenText(currentRowNumber);
+    getCurrentColTokenText(currentColNumber);
+    getCurrentDiagonalText(currentRowNumber,currentColNumber);
+    if (clickCount == gameSize * gameSize) {
+        checkDraw();
+    }
+    
+}
+function getCurrentRowTokenText(currentRowNumber){
+    currentRow = document.querySelectorAll(`div[data-row='${currentRowNumber}']`);
+    testTextToken = generateTokenText(currentRow);
+    checkWinner(testTextToken);
+}
+function getCurrentColTokenText(currentColNumber){
+    currentCol = document.querySelectorAll(`div[data-col='${currentColNumber}']`);
+    testTextToken = generateTokenText(currentCol);
+    checkWinner(testTextToken);
+}
+function getCurrentDiagonalText(currentRowNumber,currentColNumber) {
+    if (currentRowNumber == currentColNumber) {
+        currentDiagonal=document.querySelectorAll(`div[data-primaryDiag='pDiagonal']`);
+    }else if(parseInt(currentRowNumber) + parseInt(currentColNumber) == gameSize + 1){
+        currentDiagonal=document.querySelectorAll(`div[data-secondaryDiag='sDiagonal']`);
+    }   
+
+    if (currentDiagonal){
+        testTextToken = generateTokenText(currentDiagonal);
+        checkWinner(testTextToken);
+    }
+}
+
+function generateTokenText(currentCells) {
+    testText="";
+    currentCells.forEach(function(cell){
+        testText += cell.innerText;
+    });
+    return testText;
+}
+function checkWinner(currentTestToken) {
+    if(currentTestToken == currentPlayerToken.repeat(gameSize)){
+        result = true;
+        message=`<p>Congratulations!! 🎉🎉 <strong> Player "${currentPlayerToken}" is the winner.</strong></p>`;
+        endTheGame(message);
+    }
+}
+function checkDraw() { 
+    if (!result){
+        message="<p>It's a Draw!! <strong> Play Again.</strong></p>"
+        endTheGame(message);
+    }
+ }
+
+function endTheGame(message){
+    restartGame();
+    displayResult(message);
+    
+}
+function displayResult(message) {
+    $("#player_turn_display").hide();
+    $("#result").html(message);
+    $(".box").css("pointer-events", "none");
+}
+  
+
+function restartGame(){
+    $(".restart").show();
+    $("#gameSize").val("");
+    $("#restart").click(function(){
+        location.reload(true);
+    });
+}
+
+function showPlayerTurn(){
+    $(".player1").toggle();
+    $(".player2").toggle();
+}
+
