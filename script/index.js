@@ -1,6 +1,8 @@
 var clickCount = 0;
 var currentPlayerToken = "O";
-var gameSize,winner=false;
+var gameSize;
+var winner=false;
+
 startGame();
 
 function startGame() {
@@ -27,23 +29,27 @@ function setGameArena() {
     $(".game-board,.player1").show();
  }
  function createAllBoxes(){
-    var row,col,primaryDiag,secondaryDiag;
-    for ( row = 1; row <= gameSize; row++) {
-        $(".rows").append(`<div class="row" data-line=${row}></div>`)
-        for ( col = 1; col<= gameSize; col++){
-            if (row==col) {
-                primaryDiag = "pDiagonal"; 
-            }else{
-                primaryDiag = "none";
-            }
-            if (col+row == gameSize + 1) {
-                 secondaryDiag = "sDiagonal";
-            }else{
-                secondaryDiag = "none";
-            }
-        $(`[data-line = ${row}]`).append(`<div class="box" data-row=${row} data-col=${col} data-primaryDiag=${primaryDiag} data-secondaryDiag=${secondaryDiag} ></div>`);
+   
+    for ( var row = 1; row <= gameSize; row++) {
+         createRow(row);
+        for ( var col = 1; col<= gameSize; col++){
+            primaryDiagonal = setPrimaryDiagonal(row,col);
+            secondaryDiagonal = setSecondaryDiagonal(row,col);
+            createBox(row,col,primaryDiagonal,secondaryDiagonal);
         }
     }
+}
+function createRow(row){
+    $(".rows").append(`<div class="row" data-line=${row}></div>`);
+}
+function createBox(row,col,primaryDiagonal,secondaryDiagonal) {
+    $(`[data-line = ${row}]`).append(`<div class="box" data-row=${row} data-col=${col} data-primaryDiagonal=${primaryDiagonal} data-secondaryDiagonal=${secondaryDiagonal} ></div>`);
+}
+function setPrimaryDiagonal(row,col) {
+    return row == col? "pDiagonal":"none";
+}
+function setSecondaryDiagonal(row,col) {
+    return row + col == gameSize + 1?"sDiagonal":"none"
 }
 
 //all the functions for games logic
@@ -91,8 +97,8 @@ function getPossibleWinningTokenTexts(currentRowNumber,currentColNumber) {
     
     currentRow = document.querySelectorAll(`div[data-row='${currentRowNumber}']`);
     currentCol = document.querySelectorAll(`div[data-col='${currentColNumber}']`);
-    currentPrimaryDiagonal=document.querySelectorAll(`div[data-primaryDiag='pDiagonal']`);
-    currentSecondaryDiagonal=document.querySelectorAll(`div[data-secondaryDiag='sDiagonal']`);
+    currentPrimaryDiagonal=document.querySelectorAll(`div[data-primaryDiagonal='pDiagonal']`);
+    currentSecondaryDiagonal=document.querySelectorAll(`div[data-secondaryDiagonal='sDiagonal']`);
 
     possibleWinningTokenTexts=[generateTokenText(currentRow),generateTokenText(currentCol),generateTokenText(currentPrimaryDiagonal),generateTokenText(currentSecondaryDiagonal)];
     checkWinner(possibleWinningTokenTexts);
@@ -107,7 +113,7 @@ function generateTokenText(currentCells) {
     return testText;
 }
 function checkWinner(possibleWinningTokenTexts) {
-    if(possibleWinningTokenTexts.indexOf(currentPlayerToken.repeat(gameSize)) > -1){
+    if(possibleWinningTokenTexts.includes(currentPlayerToken.repeat(gameSize))){
         winner = true;
         message=`<p>Congratulations!! 🎉🎉 <strong> Player "${currentPlayerToken}" is the winner.</strong></p>`;
         endTheGame(message);
