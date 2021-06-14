@@ -5,60 +5,34 @@
 	<title>Tic-Tac-Toe</title>
 	<link rel="stylesheet" type="text/css" href="css/main.css">
 	 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-	 <script type="text/javascript" src="script/tictactoe.js"></script>
+	 
 </head>
 <body>
+	<div class="GameSizeInput center">
+		<input 
+		     placeholder="Enter the game board size.(from 3 to 100)" 
+		     type="number"
+			 id="gameSize"
+			 required
+		/>
+	</div>
  <div class="game-board">
- 	<!---------tic-tac-toe game board------------->
- 	<div class="row">
-	 	<div class="box" id="11">
-	 		
-	 	</div>
-	 	<div class="box" id="12">
-	 		
-	 	</div>
-	 	<div class="box" id="13">
-	 		
-	 	</div>
+	 <div class="rows">
+		 
 	 </div>
-
- 	<div class="row">
-	 	<div class="box" id="21">
-	 		
-	 	</div>
-	 	<div class="box" id="22">
-	 		
-	 	</div>
-	 	<div class="box" id="23">
-	 		
-	 	</div>
-	 </div>
-
-	 <div class="row">
-	 	<div class="box" id="31">
-	 		
-	 	</div>
-	 	<div class="box" id="32">
-	 		
-	 	</div>
-	 	<div class="box" id="33">
-	 		
-	 	</div>
-	 </div>
- </div>
+</div>
 <div class="center">
  <!----------player turn display---------------->
-	 <div class="row" id="player_turn_displayer">
-	 	<div class="player1" id="player1">Player_1 Turn</div>
-	 	<div class="player2" id="player2">Player_2 Turn</div>
+	 <div class="" id="player_turn_display">
+	 	<div class="player1" id="player1">Player_O Turn</div>
+	 	<div class="player2" id="player2">Player_X Turn</div>
 	 </div>
 	 <!------------result section------------------>
 	 <div id="result">
-	 	
 	 </div>
 	 <!---------start game section------------>
 	 <div class="restart">
-	 	<button id="start">Start Game</button>
+	 	<button id="startGame">Start Game</button>
 	 </div>
 	 <!---------restart game section------------>
 	 <div class="restart" style="display: none;">
@@ -66,5 +40,6 @@
 	 </div>
 </div>
 
+<script type="text/javascript" src="script/index.js"></script>
 </body>
 </html>
